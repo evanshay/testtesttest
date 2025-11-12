@@ -23,4 +23,5 @@ jobs:
       - name: Run Socket CLI Scan
         env:
           SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
-        run: npx @socketsecurity/cli scan --reachability=tier1
+        run: npx @socketsecurity/cli scan --reachability tier1
+
