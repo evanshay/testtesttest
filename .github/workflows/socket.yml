@@ -1,4 +1,4 @@
-name: Socket CLI Scan and Reachability
+name: Socket CLI Scan + Reachability
 
 on:
   pull_request:
@@ -7,6 +7,9 @@ on:
 jobs:
   socket-cli:
     runs-on: ubuntu-latest
+    env:
+      # Add this in your repo settings: Settings → Secrets and variables → Actions → New repository secret
+      SOCKET_TOKEN: ${{ secrets.SOCKET_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -20,10 +23,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Standard dependency scan
-      - name: Run Socket CLI dependency scan
-        run: npx @socketsecurity/cli scan
+      # Standard dependency scan (prints results to logs)
+      - name: Socket dependency scan
+        run: npx @socketsecurity/cli@latest scan
 
-      # Reachability (Tier 1)
-      - name: Run Socket CLI reachability
-        run: npx @socketsecurity/cli reach tier1
+      # Full-application reachability (Tier 1) via scan create + --reach
+      - name: Socket reachability (full app)
+        run: >
+          npx @socketsecurity/cli@latest scan create
+          --reach
+          --repo "${{ github.event.repository.name }}"
+          --branch "${{ github.head_ref || github.ref_name }}"
+          --pull-request "${{ github.event.number }}"
+          --report
