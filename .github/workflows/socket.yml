@@ -20,10 +20,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # --- Socket CLI Dependency Scan ---
+      # Standard dependency scan
       - name: Run Socket CLI dependency scan
         run: npx @socketsecurity/cli scan
 
-      # --- Socket CLI Reachability Analysis (Tier 1) ---
-      - name: Run Socket CLI reachability (Tier 1)
+      # Reachability (Tier 1)
+      - name: Run Socket CLI reachability
         run: npx @socketsecurity/cli reach tier1
